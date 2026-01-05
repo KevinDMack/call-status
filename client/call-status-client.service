@@ -1,0 +1,19 @@
+[Unit]
+Description=Call Status Client
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/opt/call-status-client
+Environment="PATH=/opt/call-status-client/venv/bin"
+Environment="API_URL=http://localhost:5000/status"
+Environment="POLL_INTERVAL=60"
+ExecStart=/opt/call-status-client/venv/bin/python3 /opt/call-status-client/status_client.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
