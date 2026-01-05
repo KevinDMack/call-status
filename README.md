@@ -22,6 +22,44 @@ This application consists of two parts:
 - Designed to run as a systemd service
 - Automatically restarts on failure
 
+## Testing
+
+This project includes automated tests with coverage reporting. The test suite enforces a minimum of 60% code coverage.
+
+### Running Tests
+
+To run the test suite locally:
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests with coverage
+pytest
+
+# Run tests with verbose output
+pytest -v
+
+# Generate HTML coverage report
+pytest --cov-report=html
+open htmlcov/index.html
+```
+
+### Test Coverage
+
+Current coverage: **84.81%** (exceeds 60% requirement)
+
+- **Server tests**: 97.73% coverage
+- **Client tests**: 68.57% coverage
+
+### Continuous Integration
+
+Tests run automatically on every pull request via GitHub Actions. The workflow:
+- Installs dependencies
+- Runs the test suite
+- Validates minimum 60% coverage
+- Generates coverage reports
+
 ## Installation
 
 ### Server Installation
