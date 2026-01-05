@@ -45,13 +45,20 @@ echo "Installing Python dependencies..."
 "$INSTALL_DIR/venv/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
 
 echo "Setting permissions..."
-chown -R pi:pi "$INSTALL_DIR" 2>/dev/null || chown -R $SUDO_USER:$SUDO_USER "$INSTALL_DIR"
+if id -u pi &>/dev/null; then
+    chown -R pi:pi "$INSTALL_DIR"
+elif [ -n "$SUDO_USER" ] && id -u "$SUDO_USER" &>/dev/null; then
+    chown -R "$SUDO_USER:$SUDO_USER" "$INSTALL_DIR"
+else
+    echo "Warning: Could not determine appropriate user for permissions"
+fi
 
 echo "Configuring systemd service..."
 # Update the service file with the provided API URL
-sed "s|Environment=\"API_URL=.*\"|Environment=\"API_URL=$API_URL\"|g" "$SERVICE_FILE" > /tmp/call-status-client.service
-cp /tmp/call-status-client.service /etc/systemd/system/
-rm /tmp/call-status-client.service
+TEMP_SERVICE=$(mktemp)
+sed "s|Environment=\"API_URL=.*\"|Environment=\"API_URL=$API_URL\"|g" "$SERVICE_FILE" > "$TEMP_SERVICE"
+cp "$TEMP_SERVICE" /etc/systemd/system/call-status-client.service
+rm "$TEMP_SERVICE"
 systemctl daemon-reload
 
 echo "Enabling and starting service..."
