@@ -8,7 +8,8 @@ import sys
 import os
 import requests
 
-# Add client directory to path
+# Add client directory to path to allow importing without package installation
+# This allows tests to run directly without requiring 'pip install -e .'
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../client'))
 
 from status_client import fetch_status, display_status, API_URL, POLL_INTERVAL

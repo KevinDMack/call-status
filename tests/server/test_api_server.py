@@ -8,7 +8,8 @@ from unittest.mock import patch, mock_open
 from datetime import datetime
 import sys
 
-# Add server directory to path
+# Add server directory to path to allow importing without package installation
+# This allows tests to run directly without requiring 'pip install -e .'
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../server'))
 
 from api_server import app, ensure_status_file, read_status, write_status, DEFAULT_STATUS
